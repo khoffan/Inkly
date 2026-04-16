@@ -5,9 +5,7 @@ import useBlogStore from "../../store/useBlogStore";
 import useAuthStore from "../../store/useAuthStore";
 import useCommentStore from "../../store/useCommentStore";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faHeart as faHeartSolid,
-} from "@fortawesome/free-solid-svg-icons";
+import { faHeart as faHeartSolid } from "@fortawesome/free-solid-svg-icons";
 import {
   faHeart,
   faComment,
@@ -110,7 +108,13 @@ const ActionBar = memo(function ActionBar({
 
 // ─── Main CardDetail Component ───
 export default function CardDetail({ id }) {
-  const { currentBlog, fetchBlogById, relatedBlogs, fetchRelatedBlogs, isLoading } = useBlogStore();
+  const {
+    currentBlog,
+    fetchBlogById,
+    relatedBlogs,
+    fetchRelatedBlogs,
+    isLoading,
+  } = useBlogStore();
   const navigate = useNavigate();
   const { user } = useAuthStore();
   const {
@@ -192,23 +196,6 @@ export default function CardDetail({ id }) {
         <h1 className="text-4xl md:text-[42px] font-bold leading-tight mb-8 text-gray-900 tracking-tight">
           {currentBlog.title}
         </h1>
-
-        {/* Subtitle / Description */}
-        {currentBlog.description && (
-          <p className="text-xl text-gray-500 mb-8 leading-relaxed font-sans font-light">
-            {currentBlog.description}
-          </p>
-        )}
-
-        {/* Action Bar (Top) — Isolated component */}
-        <div className="mb-10">
-          <ActionBar
-            blogId={id}
-            likes={currentBlog.likes}
-            commentsCount={commentsCount}
-            userId={user?.authid}
-          />
-        </div>
 
         {/* Main Content — Prose (heavy, won't re-render on like) */}
         <div className="prose prose-lg prose-gray max-w-none font-serif text-[20px] leading-relaxed tracking-normal text-gray-800">
@@ -352,7 +339,9 @@ export default function CardDetail({ id }) {
         {/* ─── Related Stories ─── */}
         {relatedBlogs && relatedBlogs.length > 0 && (
           <div className="mt-16 pt-10 border-t border-gray-200">
-            <h3 className="text-2xl font-bold font-sans mb-8">Related Stories</h3>
+            <h3 className="text-2xl font-bold font-sans mb-8">
+              Related Stories
+            </h3>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               {relatedBlogs.map((blog) => (
                 <div
@@ -370,7 +359,9 @@ export default function CardDetail({ id }) {
                       />
                     ) : (
                       <div className="w-full h-full bg-gray-50 flex items-center justify-center">
-                        <span className="text-gray-300 text-3xl font-serif">✦</span>
+                        <span className="text-gray-300 text-3xl font-serif">
+                          ✦
+                        </span>
                       </div>
                     )}
                   </div>

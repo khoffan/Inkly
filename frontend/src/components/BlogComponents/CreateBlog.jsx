@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import ParagraphField from "./ParagraphField";
 import TagField from "./TagField";
 import useBlogStore from "../../store/useBlogStore";
@@ -10,7 +10,13 @@ import { Helmet } from "react-helmet-async";
 
 export default function CreateBlog() {
   const navigate = useNavigate();
-  const { createBlog, uploadBlogImage, saveDraftToCloud, fetchCloudDraft, isLoading } = useBlogStore();
+  const {
+    createBlog,
+    uploadBlogImage,
+    saveDraftToCloud,
+    fetchCloudDraft,
+    isLoading,
+  } = useBlogStore();
   const { user } = useAuthStore();
   const { allTags, fetchUniqueTags, createTag } = useTagStore();
 
@@ -19,7 +25,7 @@ export default function CreateBlog() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isTextnavigate, setIsTextnavigate] = useState([false]);
   const [tags, setTags] = useState([]);
-  
+
   const [saveStatus, setSaveStatus] = useState("Saved to cloud ☁️");
   const hasChanges = useRef(false);
   const paragraphRef = useRef([]);
@@ -30,14 +36,23 @@ export default function CreateBlog() {
 
   useEffect(() => {
     if (!user) return;
-    
+
     // Load draft from cloud, fallback to empty state
     const loadDraft = async () => {
       const draft = await fetchCloudDraft();
       if (draft) {
-        setParagraphs(draft.content?.length > 0 ? draft.content : [{ type: "text", content: "" }]);
-        setBlogImage(draft.images?.map(img => ({ id: img.imageId, image_path: img.imagePath })) || []);
-        setTags(draft.tag?.map(t => t.tagname) || []);
+        setParagraphs(
+          draft.content?.length > 0
+            ? draft.content
+            : [{ type: "text", content: "" }],
+        );
+        setBlogImage(
+          draft.images?.map((img) => ({
+            id: img.imageId,
+            image_path: img.imagePath,
+          })) || [],
+        );
+        setTags(draft.tag?.map((t) => t.tagname) || []);
       }
     };
     loadDraft();
@@ -61,9 +76,12 @@ export default function CreateBlog() {
       tags: t,
       author: user.authid,
       title: p[0]?.content || "Untitled Draft",
-      description: p.length > 1 && p[1].type === "text" ? p[1].content.substring(0, 150) : ""
+      description:
+        p.length > 1 && p[1].type === "text"
+          ? p[1].content.substring(0, 150)
+          : "",
     };
-    
+
     const success = await saveDraftToCloud(draftData);
     if (success) {
       setSaveStatus("Saved to cloud ☁️");
@@ -240,12 +258,14 @@ export default function CreateBlog() {
         <meta name="description" content="Inkly Create a new blog post" />
         <meta name="keywords" content="blog, create blog, new blog" />
       </Helmet>
-      <div className="max-w-[800px] mx-auto px-6 py-12">
+      <div className="w-full max-w-[800px] mx-auto px-6 sm:px-6 py-6 md:py-12">
         {/* Publish Header */}
         <div className="flex justify-between items-center mb-10 pb-4 border-b border-gray-100">
           <div className="flex items-center gap-3">
             <span className="text-gray-400 font-sans">Draft</span>
-            <span className={`text-sm font-medium ${saveStatus.includes("Unsaved") ? "text-amber-500" : saveStatus.includes("cloud") ? "text-green-500" : "text-gray-500"}`}>
+            <span
+              className={`text-sm font-medium ${saveStatus.includes("Unsaved") ? "text-amber-500" : saveStatus.includes("cloud") ? "text-green-500" : "text-gray-500"}`}
+            >
               {saveStatus}
             </span>
           </div>

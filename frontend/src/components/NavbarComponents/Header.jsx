@@ -1,7 +1,7 @@
+import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass, faBars } from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import logo from "../../assets/logo-inkly.png";
 import UserMenu from "./Usermenu";
 import Authbutton from "./Authbutton";
 import useBlogStore from "../../store/useBlogStore";
@@ -140,5 +140,49 @@ function Header({
     </nav>
   );
 }
+
+Header.propTypes = {
+  // Refs
+  dropdownRef: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+  ]),
+
+  // Booleans (สถานะต่างๆ)
+  isCreateBlog: PropTypes.bool,
+  isLogin: PropTypes.bool.isRequired,
+  isImage: PropTypes.bool,
+  isDropdown: PropTypes.bool,
+  isSearchOpen: PropTypes.bool,
+
+  // Object ข้อมูลผู้ใช้
+  user: PropTypes.shape({
+    first_name: PropTypes.string,
+    image_path: PropTypes.string,
+  }),
+
+  // Functions (Event Handlers)
+  publicState: PropTypes.func,
+  handleDropdown: PropTypes.func.isRequired,
+  handleCheckLogin: PropTypes.func,
+  handleLogout: PropTypes.func,
+  handleProfileNavigate: PropTypes.func,
+  handleToWriteBlog: PropTypes.func,
+  handleToBlogPage: PropTypes.func,
+  toggleSearch: PropTypes.func,
+};
+
+// กำหนดค่าเริ่มต้นเพื่อป้องกัน Error เวลาข้อมูลยังไม่มา
+Header.defaultProps = {
+  isCreateBlog: false,
+  isLogin: false,
+  isImage: false,
+  isDropdown: false,
+  isSearchOpen: false,
+  user: {
+    first_name: "User",
+    image_path: "",
+  },
+};
 
 export default Header;
